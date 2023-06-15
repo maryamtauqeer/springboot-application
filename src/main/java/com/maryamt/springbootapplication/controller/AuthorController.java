@@ -3,11 +3,13 @@ package com.maryamt.springbootapplication.controller;
 
 import com.maryamt.springbootapplication.dto.AuthorDTO;
 import com.maryamt.springbootapplication.entity.Author;
+import com.maryamt.springbootapplication.exception.ResourceNotFoundException;
 import com.maryamt.springbootapplication.service.AuthorService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -23,11 +25,35 @@ public class AuthorController {
         return new ResponseEntity<>(savedAuthor, HttpStatus.CREATED);
     }
 
+//    @GetMapping("{id}")
+//    public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable("id") Long authorId){
+//        AuthorDTO author = authorService.getAuthorById(authorId);
+//        return new ResponseEntity<>(author, HttpStatus.OK);
+//    }
+
+//    @GetMapping("{id}")
+//    public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable("id") Long authorId) throws ResourceNotFoundException {
+//        AuthorDTO author = authorService.getAuthorById(authorId);
+//
+//        if (author != null) {
+//            return new ResponseEntity<>(author, HttpStatus.OK);
+//        } else {
+//            throw new ResourceNotFoundException("Author not found for this id :: " + authorId);
+//        }
+//    }
+
     @GetMapping("{id}")
-    public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable("id") Long authorId){
-        AuthorDTO author = authorService.getAuthorById(authorId);
-        return new ResponseEntity<>(author, HttpStatus.OK);
+    public ResponseEntity<AuthorDTO> getAuthorById(@PathVariable("id") Long authorId) throws ResourceNotFoundException {
+        try {
+            AuthorDTO author = authorService.getAuthorById(authorId);
+            return new ResponseEntity<>(author, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
+        }
     }
+
+
+
 
     @GetMapping
     public ResponseEntity<List<AuthorDTO>> getAllAuthors(){

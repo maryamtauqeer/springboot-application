@@ -15,6 +15,7 @@ import java.util.List;
 public class PublisherDTO {
     private Long pub_id;
     private String name;
-    private List<Book> books;
+    private List<BookPublisherDTO> books;
+//    private List<BookDTO> books;
 }
 

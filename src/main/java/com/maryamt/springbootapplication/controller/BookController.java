@@ -1,6 +1,7 @@
 package com.maryamt.springbootapplication.controller;
 
 import com.maryamt.springbootapplication.dto.BookDTO;
+import com.maryamt.springbootapplication.dto.BookPublisherDTO;
 import com.maryamt.springbootapplication.entity.Book;
 import com.maryamt.springbootapplication.service.BookService;
 import lombok.AllArgsConstructor;
@@ -43,6 +44,23 @@ public class BookController {
         BookDTO updatedBook =bookService.updateBook(bookDTO);
         return new ResponseEntity<>(updatedBook, HttpStatus.OK);
     }
+
+    @PutMapping("{id}/publishers")
+    public ResponseEntity<BookDTO> addPublishers(@PathVariable("id")Long book_id, @RequestBody List<BookPublisherDTO> pub){
+        BookDTO updatedBook =bookService.addPublisher(pub, book_id);
+        return new ResponseEntity<>(updatedBook, HttpStatus.OK);
+    }
+
+    //REQUEST BODY:
+//    [
+//    {
+//        "publisherId": 3
+//    },
+//    {
+//        "publisherId":2
+//    }
+//      ]
+
 
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteBook(@PathVariable("id")Long id){

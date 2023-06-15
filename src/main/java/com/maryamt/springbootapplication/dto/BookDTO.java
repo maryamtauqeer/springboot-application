@@ -20,8 +20,9 @@ import java.util.List;
 public class BookDTO {
     private Long book_id;
     private String name;
-    private Author author;
-    private Genre genre;
-    private List<Publisher> publishers;
-    private List<Review> reviews;
+    private AuthorDTO author;
+    private GenreDTO genre;
+//    private List<PublisherDTO> publishers;
+    private List<BookPublisherDTO> publishers;
+//    private List<ReviewDTO> reviews;
 }

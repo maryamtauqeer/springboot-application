@@ -21,10 +21,9 @@ public class Publisher {
     @Column(name="publisher_id")
     private Long pub_id;
 
-    @Column(nullable = false, unique = true)
+    @Column( unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "publishers")
-    @JsonIgnore
     private List<Book> books;
 }

@@ -30,27 +30,26 @@ public class Book {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_author_id", nullable = false, referencedColumnName = "author_id")
+    @JoinColumn(name = "fk_author_id", referencedColumnName = "author_id")
     private Author author;
 
 //    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 //    @JoinColumn(name = "fk_genre_id", nullable = false)
 //    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_genre_id", nullable = false, referencedColumnName = "genre_id")
+    @JoinColumn(name = "fk_genre_id", referencedColumnName = "genre_id")
     private Genre genre;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(
             name = "book_publisher",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "publisher_id")
     )
-    @JsonIgnore
     private List<Publisher> publishers;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Review> reviews;
+//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Review> reviews;
 
 //    @Column(nullable = false)
 //    private LocalDate pub_date;

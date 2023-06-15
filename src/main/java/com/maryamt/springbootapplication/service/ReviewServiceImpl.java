@@ -1,8 +1,10 @@
 package com.maryamt.springbootapplication.service;
 
 import com.maryamt.springbootapplication.dto.ReviewDTO;
+import com.maryamt.springbootapplication.entity.Book;
 import com.maryamt.springbootapplication.entity.Review;
 import com.maryamt.springbootapplication.mapper.ReviewMapper;
+import com.maryamt.springbootapplication.repository.BookRepo;
 import com.maryamt.springbootapplication.repository.ReviewRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +18,32 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService{
     @Autowired
     private ReviewRepo reviewRepo;
+
+    @Autowired
+    private BookRepo bookRepo;
+
+//    @Override
+//    public ReviewDTO createReview(ReviewDTO reviewDTO) {
+//        Review review= ReviewMapper.mapToReview(reviewDTO);
+//        Review savedReview= reviewRepo.save(review);
+//        return ReviewMapper.mapToReviewDto(review);
+//    }
+
     @Override
     public ReviewDTO createReview(ReviewDTO reviewDTO) {
-        Review review= ReviewMapper.mapToReview(reviewDTO);
-        Review savedReview= reviewRepo.save(review);
-        return ReviewMapper.mapToReviewDto(review);
+        Optional<Book> book = bookRepo.findById(reviewDTO.getBook().getBook_id());
+
+        Review review = new Review();
+        review.setBook(book.orElse(null));
+        review.setComment(reviewDTO.getComment());
+        review.setRating(reviewDTO.getRating());
+
+        Review savedReview = reviewRepo.save(review);
+
+        return ReviewMapper.mapToReviewDto(savedReview);
     }
+
+
 
     @Override
     public ReviewDTO getReviewById(Long review_id) {

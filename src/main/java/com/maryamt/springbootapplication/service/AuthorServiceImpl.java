@@ -2,6 +2,7 @@ package com.maryamt.springbootapplication.service;
 
 import com.maryamt.springbootapplication.dto.AuthorDTO;
 import com.maryamt.springbootapplication.entity.Author;
+import com.maryamt.springbootapplication.exception.ResourceNotFoundException;
 import com.maryamt.springbootapplication.mapper.AuthorMapper;
 import com.maryamt.springbootapplication.repository.AuthorRepo;
 import lombok.AllArgsConstructor;
@@ -26,11 +27,23 @@ public class AuthorServiceImpl implements AuthorService{
     }
 
     @Override
-    public AuthorDTO getAuthorById(Long author_id) {
-        Optional<Author> optionalAuthor= authorRepository.findById(author_id);
-        Author author=optionalAuthor.get();
-        return AuthorMapper.mapToAuthorDto(author);
+//    public AuthorDTO getAuthorById(Long author_id) {
+//        Optional<Author> optionalAuthor= authorRepository.findById(author_id);
+//        Author author=optionalAuthor.get();
+//        return AuthorMapper.mapToAuthorDto(author);
+//    }
+
+    public AuthorDTO getAuthorById(Long authorId) throws ResourceNotFoundException {
+        Optional<Author> optionalAuthor = authorRepository.findById(authorId);
+
+        if (optionalAuthor.isPresent()) {
+            Author author = optionalAuthor.get();
+            return AuthorMapper.mapToAuthorDto(author);
+        } else {
+            throw new ResourceNotFoundException("Author not found for this id: " + authorId);
+        }
     }
+
 
     @Override
     public List<AuthorDTO> getAllAuthors() {
